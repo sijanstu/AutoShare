@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Auto-Share">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/Auto-Share.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
