@@ -1,6 +1,7 @@
 package com.sijanstu.autoshare.gui;
 
 import com.sijanstu.autoshare.AutoShare;
+import com.sijanstu.autoshare.Config;
 import com.sijanstu.autoshare.entity.User;
 import java.io.File;
 import java.io.FileReader;
@@ -16,7 +17,7 @@ import javax.swing.JOptionPane;
  * @author Sijan
  */
 public class AddUser extends javax.swing.JFrame {
-
+static File file = new File(Config.PROPERIES_PATH);
     /**
      * Creates new form AddUser
      *
@@ -126,7 +127,6 @@ public class AddUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "You must enter username and password");
         } else {
             try {
-                File file = new File("autoshare.properties");
                 Properties p = new Properties();
                 if (file.exists()) {
                     p.load(new FileReader(file));

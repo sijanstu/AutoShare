@@ -1,11 +1,14 @@
 package com.sijanstu.autoshare;
 
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
 import com.sijanstu.autoshare.browser.Chromium;
 import com.sijanstu.autoshare.gui.MainUI;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +29,8 @@ public class AutoShare {
     }
 
     static void getCompanyList() {
-        Page page = Chromium.startBrowser("https://meroshare.cdsc.com.np/#/login", false);
+        Page page=Chromium.startBrowser("https://meroshare.cdsc.com.np/#/login", Boolean.FALSE);
+        //page.navigate("https://meroshare.cdsc.com.np/#/login", new Page.NavigateOptions());
         Document dropdown = Jsoup.parse(page.innerHTML("#selectBranch > select"));
         Elements options = dropdown.getElementsByTag("option");
         options.forEach((option) -> companiesList.add(option.text()));

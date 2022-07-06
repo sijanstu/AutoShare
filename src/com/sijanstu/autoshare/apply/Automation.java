@@ -1,7 +1,10 @@
-
 package com.sijanstu.autoshare.apply;
 
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.SelectOption;
 import com.sijanstu.autoshare.browser.Chromium;
@@ -21,12 +24,18 @@ import org.jsoup.select.Elements;
  * @author Sijan
  */
 public class Automation {
-   static String response = null;
    public static Page page;
-
-    public static Object applyIPO(User user,int companyToApply,boolean checkingIPO,boolean verifying) throws Exception{
-        page=null;
-        page = Chromium.startBrowser("https://meroshare.cdsc.com.np/#/login", !MainUI.showBox.isSelected());
+    public static Object applyIPO(User user, int companyToApply, boolean checkingIPO, boolean verifying) throws Exception {
+        String response=null;
+        //playwright = Playwright.create();
+        //BrowserType chromium = playwright.chromium();
+       // BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(!MainUI.showBox.isSelected());
+       // launchOptions.slowMo = 65.5;
+       // Browser browser = chromium.launch(launchOptions.setChannel("chrome"));
+       // BrowserContext context = browser.newContext();
+         page = Chromium.startBrowser("https://meroshare.cdsc.com.np/#/login", !MainUI.showBox.isSelected());
+        //clear cache
+        //page.navigate("https://meroshare.cdsc.com.np/#/login", new Page.NavigateOptions());
         page.onPageError((pageError) -> {
             //show dialog box with error message
             JDialog dialog = new JDialog();
@@ -37,10 +46,6 @@ public class Automation {
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             dialog.add(new JLabel(pageError));
         });
-        if (response != null) {
-            page.close();
-            return response;
-        }
         page.navigate("https://meroshare.cdsc.com.np");
         page.waitForLoadState(LoadState.NETWORKIDLE);
         page.click("#selectBranch");
@@ -60,40 +65,57 @@ public class Automation {
         page.waitForLoadState();
         if (page.isVisible("#toast-container > div")) {
             response = Jsoup.parse(page.innerHTML("#toast-container > div")).text();
-            page.close();
+           // page.close();
             return response;
         }
         page.navigate("https://meroshare.cdsc.com.np/#/asba");
         page.waitForLoadState();
         page.navigate("https://meroshare.cdsc.com.np/#/asba");
         page.waitForLoadState();
-        if (verifying){
+        if (verifying) {
             page.click("#main > div > app-asba > div > div.row > div > div > ul > li:nth-child(3)");
             page.waitForLoadState();
             return "Verifying";
         }
         page.click("#main > div > app-asba > div > div.row > div > div > ul > li:nth-child(1)");
         page.waitForLoadState();
-        Document companyListHtml=Jsoup.parse(page.innerHTML("#main > div > app-asba > div > div:nth-child(2)"));
-        Elements companyListElements=companyListHtml.getElementsByClass("company-name");
-        if (companyListElements.isEmpty()) {
-            response = "No companies found";
-            page.close();
-            return response;
+        if (!page.isVisible("#main > div > app-asba > div > div:nth-child(2)")) {
+            page.reload();
+            page.waitForLoadState();
         }
-        List<Company> companies=new ArrayList<>();
-        if(checkingIPO){
-            companyListElements.forEach((companyElement) -> {
-                Company company=new Company();
-                company.setName(companyElement.text());
-                companies.add(company);
-            });
-            page.close();
-            return companies;
+        Elements companyListElements;
+        int i = 0;
+        while (i < 4) {
+            Document companyListHtml = Jsoup.parse(page.innerHTML("#main > div > app-asba > div > div:nth-child(2)"));
+            companyListElements = companyListHtml.getElementsByClass("company-name");
+            if (companyListElements.isEmpty()) {
+                if (i <= 4) {
+                    i++;
+                    page.reload();
+                    continue;
+                }
+                response = "No companies found";
+                //page.close();
+                return response;
+            }
+            List<Company> companies = new ArrayList<>();
+            if (checkingIPO) {
+                companyListElements.forEach((companyElement) -> {
+                    Company company = new Company();
+                    company.setName(companyElement.text());
+                    companies.add(company);
+                });
+                //page.close();
+                return companies;
+            }
+            break;
         }
         page.waitForLoadState();
         //select company to apply for IPO
-        String companySelector="#main > div > app-asba > div > div:nth-child(2) > app-applicable-issue > div > div > div > div > div:nth-child("+companyToApply+") > div > div.col-md-5.col-sm-3 > div > div:nth-child(4) > button";
+        String companySelector = "#main > div > app-asba > div > div:nth-child(2) > app-applicable-issue > div > div > div > div > div:nth-child(" + companyToApply + ") > div > div.col-md-5.col-sm-3 > div > div:nth-child(4) > button";
+        if (!page.isVisible(companySelector)) {
+            return "Already Applied";
+        }
         page.click(companySelector);
         page.waitForLoadState();
         System.out.println(companySelector);
@@ -112,10 +134,10 @@ public class Automation {
         page.type("#transactionPIN", user.getPIN());
         page.click("#main > div > app-issue > div > wizard > div > wizard-step:nth-child(2) > div.card > div > form > div.row > div > div > div > button.btn.btn-gap.btn-primary");
         page.waitForLoadState();
-
+        page.waitForTimeout(1500);
         if (page.isVisible("#toast-container")) {
             response = Jsoup.parse(page.innerHTML("#toast-container > div")).text();
-           // page.close();
+            // page.close();
             return response;
         }
         return "success but verify once";

@@ -1,5 +1,6 @@
 package com.sijanstu.autoshare.gui;
 
+import com.sijanstu.autoshare.Config;
 import com.sijanstu.autoshare.entity.User;
 import java.io.*;
 import java.util.Properties;
@@ -12,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Sijan
  */
 public class UserList extends javax.swing.JFrame {
-
+static File file = new File(Config.PROPERIES_PATH);
 
     /**
      * Creates new form UserList
@@ -23,8 +24,6 @@ public class UserList extends javax.swing.JFrame {
     }
 
     static void refresh() {
-
-        File file = new File("autoshare.properties");
         if (file.exists()) {
             try {
                 Properties p = new Properties();
@@ -151,7 +150,6 @@ public class UserList extends javax.swing.JFrame {
     }//GEN-LAST:event_addbtnActionPerformed
 
     private void deletebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebtnActionPerformed
-        File file = new File("autoshare.properties");
         int row = table.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Please select a user to delete");

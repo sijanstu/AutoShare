@@ -10,10 +10,10 @@ import com.microsoft.playwright.Playwright;
  * @author Sijan Bhandari
  */
 public class Chromium {
-
+static public Playwright playwright;
     public static Page startBrowser(String url, Boolean visibility) {
-        Playwright playwright = Playwright.create();
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(visibility);
+        playwright = Playwright.create();
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(false);
         launchOptions.slowMo = 65.5;
         Browser browser = playwright.chromium().launch(launchOptions);
         BrowserContext context = browser.newContext();

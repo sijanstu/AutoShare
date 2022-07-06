@@ -1,6 +1,6 @@
 package com.sijanstu.autoshare.gui;
 
-import com.sijanstu.autoshare.AutoShare;
+import com.sijanstu.autoshare.Config;
 import com.sijanstu.autoshare.apply.Automation;
 import com.sijanstu.autoshare.browser.Chromium;
 import com.sijanstu.autoshare.entity.Company;
@@ -22,7 +22,10 @@ import java.util.logging.Logger;
  * @author Sijan
  */
 public final class MainUI extends javax.swing.JFrame {
-static List<Company> companiesList;
+
+    static List<Company> companiesList;
+    static File file = new File(Config.PROPERIES_PATH);
+
     /**
      * Creates new form NewJFrame
      */
@@ -49,13 +52,14 @@ static List<Company> companiesList;
         rSButtonRound3 = new rojeru_san.rsbutton.RSButtonRound();
         rSButtonRound4 = new rojeru_san.rsbutton.RSButtonRound();
         ipocheck = new rojeru_san.rsbutton.RSButtonRound();
-        showBox = new rojerusan.RSCheckBox();
         applyPanel = new javax.swing.JPanel();
         verify = new rojeru_san.rsbutton.RSButtonRound();
         apply = new rojeru_san.rsbutton.RSButtonRound();
         kitta = new RSMaterialComponent.RSTextFieldMaterial();
         compBox = new rojerusan.RSComboBox();
+        isbatch = new rojerusan.RSCheckBox();
         jLabel2 = new javax.swing.JLabel();
+        showBox = new rojerusan.RSCheckBox();
 
         rSButtonMaterialIconShadow1.setText("rSButtonMaterialIconShadow1");
 
@@ -97,10 +101,6 @@ static List<Company> companiesList;
         });
         jPanel1.add(ipocheck, new org.netbeans.lib.awtextra.AbsoluteConstraints(114, 128, -1, 34));
 
-        showBox.setSelected(true);
-        showBox.setText("Show me everything");
-        jPanel1.add(showBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 210, -1));
-
         applyPanel.setBackground(new java.awt.Color(255, 255, 255));
         applyPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -110,7 +110,7 @@ static List<Company> companiesList;
                 verifyActionPerformed(evt);
             }
         });
-        applyPanel.add(verify, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 120, 34));
+        applyPanel.add(verify, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, 120, 34));
 
         apply.setText("Apply");
         apply.addActionListener(new java.awt.event.ActionListener() {
@@ -118,17 +118,24 @@ static List<Company> companiesList;
                 applyActionPerformed(evt);
             }
         });
-        applyPanel.add(apply, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, 120, 34));
+        applyPanel.add(apply, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 120, 34));
 
         kitta.setPlaceholder("Number of Kitta to Apply");
         applyPanel.add(kitta, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 179, -1));
 
         applyPanel.add(compBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 414, -1));
 
+        isbatch.setText("All User");
+        applyPanel.add(isbatch, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 90, 50));
+
         jPanel1.add(applyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 440, 150));
 
         jLabel2.setText("Please wait for 30 seconds to get any errors");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 330, 240, -1));
+
+        showBox.setSelected(true);
+        showBox.setText("Show me everything");
+        jPanel1.add(showBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 210, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -149,85 +156,106 @@ static List<Company> companiesList;
         UserList.main();
 
     }//GEN-LAST:event_rSButtonRound3ActionPerformed
-
+    void applyForUser(User user) throws Exception {
+        String response = (String) Automation.applyIPO(user, compBox.getSelectedIndex() + 1, false, false);
+        JOptionPane.showMessageDialog(this, response);
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(new BorderLayout());
+        ImageIcon image = new ImageIcon(Automation.page.screenshot());
+        image.setImage(image.getImage().getScaledInstance(900, 500, Image.SCALE_SMOOTH));
+        JLabel label = new JLabel(image);
+        Chromium.playwright.close();
+        panel1.add(label, BorderLayout.CENTER);
+        JOptionPane.showMessageDialog(this, panel1);
+    }
     private void applyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyActionPerformed
-        File file = new File("autoshare.properties");
-        if (file.exists()) {
-            try {
+        try {
+            if (file.exists()) {
                 Properties p = new Properties();
-                User user=new User();
+                User user;
                 p.load(new FileReader(file));
-                String userKey=userbox.getSelectedItem().toString().split("[.]")[0];
-                user.setUsername(p.getProperty(userKey+".username"));
-                user.setPassword(p.getProperty(userKey+".password"));
-                user.setCRN(p.getProperty(userKey+".crn"));
-                user.setPIN(p.getProperty(userKey+".pin"));
-                user.setKitta(kitta.getText());
-                user.setSecurity(p.getProperty(userKey+".dp"));
-                String response=(String) Automation.applyIPO(user,compBox.getSelectedIndex()+1,false,false);
-                //dialogue box for response
-                JOptionPane.showMessageDialog(this, response);
-                //show screenshot of response
-                JPanel panel1 = new JPanel();
-                panel1.setLayout(new BorderLayout());
-                ImageIcon image = new ImageIcon(Automation.page.screenshot());
-                image.setImage(image.getImage().getScaledInstance(900, 500, Image.SCALE_SMOOTH));
-                JLabel label = new JLabel(image);
-                Automation.page.close();
-                panel1.add(label, BorderLayout.CENTER);
-                JOptionPane.showMessageDialog(this, panel1);
-                Automation.page.close();
-            } catch (Exception ex) {
-                Automation.page.close();
-                JOptionPane.showMessageDialog(this, "Error in applying IPO:\n"+ex.getMessage());
+                if (isbatch.isSelected()) {
+                    int i = 1;
+                    while (true) {
+                        String userNumber = "user" + i;
+                        if (p.containsKey(userNumber + ".username")) {
+                            user = new User();
+                            user.setUsername(p.getProperty(userNumber + ".username"));
+                            user.setPassword(p.getProperty(userNumber + ".password"));
+                            user.setCRN(p.getProperty(userNumber + ".crn"));
+                            user.setPIN(p.getProperty(userNumber + ".pin"));
+                            user.setKitta(kitta.getText());
+                            user.setSecurity(p.getProperty(userNumber + ".dp"));
+                            applyForUser(user);
+                            i++;
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    user = new User();
+                    String userKey = userbox.getSelectedItem().toString().split("[.]")[0];
+                    user.setUsername(p.getProperty(userKey + ".username"));
+                    user.setPassword(p.getProperty(userKey + ".password"));
+                    user.setCRN(p.getProperty(userKey + ".crn"));
+                    user.setPIN(p.getProperty(userKey + ".pin"));
+                    user.setKitta(kitta.getText());
+                    user.setSecurity(p.getProperty(userKey + ".dp"));
+                    applyForUser(user);
+                }
+
             }
+        } catch (Exception ex) {
+            Chromium.playwright.close();
+            JOptionPane.showMessageDialog(this, "Error in applying IPO:\n" + ex.getMessage());
         }
 
 
     }//GEN-LAST:event_applyActionPerformed
 
     private void rSButtonRound4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonRound4ActionPerformed
-       getUsers();
+        getUsers();
     }//GEN-LAST:event_rSButtonRound4ActionPerformed
 
     private void ipocheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ipocheckActionPerformed
-        File file = new File("autoshare.properties");
         if (file.exists()) {
             try {
                 Properties p = new Properties();
-                User user=new User();
+                User user = new User();
                 p.load(new FileReader(file));
-                String userKey=userbox.getSelectedItem().toString().split("[.]")[0];
-                user.setUsername(p.getProperty(userKey+".username"));
-                user.setPassword(p.getProperty(userKey+".password"));
-                user.setCRN(p.getProperty(userKey+".crn"));
-                user.setPIN(p.getProperty(userKey+".pin"));
+                String userKey = userbox.getSelectedItem().toString().split("[.]")[0];
+                user.setUsername(p.getProperty(userKey + ".username"));
+                user.setPassword(p.getProperty(userKey + ".password"));
+                user.setCRN(p.getProperty(userKey + ".crn"));
+                user.setPIN(p.getProperty(userKey + ".pin"));
                 user.setKitta(kitta.getText());
-                user.setSecurity(p.getProperty(userKey+".dp"));
-                int companyIndex=compBox.getSelectedIndex()+1;
-                System.out.println("selected"+companyIndex);
-                Object response=(Object) Automation.applyIPO(user,companyIndex,true,false);
+                user.setSecurity(p.getProperty(userKey + ".dp"));
+                int companyIndex = compBox.getSelectedIndex() + 1;
+                System.out.println("selected" + companyIndex);
+                Object response = (Object) Automation.applyIPO(user, companyIndex, true, false);
                 if (response instanceof String) {
                     JOptionPane.showMessageDialog(this, response);
                 } else {
-                    companiesList=(List<Company>) response;
-                    if (companiesList.isEmpty()){
-                        JOptionPane.showMessageDialog(this, "No IPO available for this company");
+                    companiesList = (List<Company>) response;
+                    if (companiesList.isEmpty()) {
+                        Chromium.playwright.close();
+                        JOptionPane.showMessageDialog(this, "No IPOs available");
                     } else {
                         compBox.removeAllItems();
                         for (Company company : companiesList) {
                             compBox.addItem(company.getName());
                         }
+                        Chromium.playwright.close();
                         JOptionPane.showMessageDialog(this, "select company to apply IPO");
                         applyPanel.setVisible(true);
-                        
+
                     }
 
                 }
             } catch (IOException ex) {
                 Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception e) {
-                Automation.page.close();
+                Chromium.playwright.close();
                 JOptionPane.showMessageDialog(this, e.getMessage());
 
             }
@@ -235,36 +263,35 @@ static List<Company> companiesList;
     }//GEN-LAST:event_ipocheckActionPerformed
 
     private void verifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifyActionPerformed
-        File file = new File("autoshare.properties");
         if (file.exists()) {
             try {
                 Properties p = new Properties();
-                User user=new User();
+                User user = new User();
                 p.load(new FileReader(file));
-                String userKey=userbox.getSelectedItem().toString().split("[.]")[0];
-                user.setUsername(p.getProperty(userKey+".username"));
-                user.setPassword(p.getProperty(userKey+".password"));
-                user.setCRN(p.getProperty(userKey+".crn"));
-                user.setPIN(p.getProperty(userKey+".pin"));
+                String userKey = userbox.getSelectedItem().toString().split("[.]")[0];
+                user.setUsername(p.getProperty(userKey + ".username"));
+                user.setPassword(p.getProperty(userKey + ".password"));
+                user.setCRN(p.getProperty(userKey + ".crn"));
+                user.setPIN(p.getProperty(userKey + ".pin"));
                 user.setKitta(kitta.getText());
-                user.setSecurity(p.getProperty(userKey+".dp"));
-                int companyIndex=compBox.getSelectedIndex()+1;
-                System.out.println("selected"+companyIndex);
-                Object response=(Object) Automation.applyIPO(user,companyIndex,true,true);
+                user.setSecurity(p.getProperty(userKey + ".dp"));
+                int companyIndex = compBox.getSelectedIndex() + 1;
+                System.out.println("selected" + companyIndex);
+                Object response = (Object) Automation.applyIPO(user, companyIndex, true, true);
                 JPanel panel = new JPanel();
                 panel.setLayout(new BorderLayout());
                 Automation.page.waitForLoadState();
                 ImageIcon image = new ImageIcon(Automation.page.screenshot());
                 image.setImage(image.getImage().getScaledInstance(900, 500, Image.SCALE_SMOOTH));
                 JLabel label = new JLabel(image);
-                Automation.page.close();
+                Chromium.playwright.close();
                 panel.add(label, BorderLayout.CENTER);
                 JOptionPane.showMessageDialog(this, panel);
-                
+
             } catch (IOException ex) {
                 Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception e) {
-                Automation.page.close();
+                Chromium.playwright.close();
                 JOptionPane.showMessageDialog(this, e.getMessage());
 
             }
@@ -272,7 +299,6 @@ static List<Company> companiesList;
     }//GEN-LAST:event_verifyActionPerformed
     void getUsers() {
         userbox.removeAllItems();
-        File file = new File("autoshare.properties");
         if (file.exists()) {
             try {
                 Properties p = new Properties();
@@ -281,7 +307,7 @@ static List<Company> companiesList;
                 while (true) {
                     String userNumber = "user" + i;
                     if (p.containsKey(userNumber + ".username")) {
-                        userbox.addItem(userNumber + "."+p.getProperty(userNumber + ".username"));
+                        userbox.addItem(userNumber + "." + p.getProperty(userNumber + ".username"));
                         i++;
                     } else {
                         break;
@@ -291,7 +317,6 @@ static List<Company> companiesList;
                 Logger.getLogger(UserList.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(UserList.class.getName()).log(Level.SEVERE, null, ex);
-                Automation.page.close();
             }
 
         }
@@ -330,6 +355,7 @@ static List<Company> companiesList;
     private javax.swing.JPanel applyPanel;
     private rojerusan.RSComboBox compBox;
     private rojeru_san.rsbutton.RSButtonRound ipocheck;
+    public static rojerusan.RSCheckBox isbatch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
