@@ -34,6 +34,8 @@ public final class MainUI extends javax.swing.JFrame {
         getUsers();
         compBox.removeAllItems();
         applyPanel.setVisible(false);
+        //change icon
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/com/sijanstu/autoshare/gui/logo.png")));
     }
 
     /**
