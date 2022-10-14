@@ -351,7 +351,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_manageUserButtonActionPerformed
 
     private void profileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileActionPerformed
-        // TODO add your handling code here:
+     Profile.main(currentUser);
     }//GEN-LAST:event_profileActionPerformed
     void changeTheme(boolean isDark) {
         if (isDark) {

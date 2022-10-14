@@ -87,6 +87,7 @@ public class Request {
         User user = new Gson().fromJson(response.body(), User.class);
         user.setToken(this.user.getToken());
         this.user = user;
+        System.out.println(user);
     }
 
     private void getBanks() throws IOException {

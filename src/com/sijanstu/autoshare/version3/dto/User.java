@@ -42,4 +42,38 @@ public class User implements Serializable {
     private String renewedDate;
     private String renewedDateStr;
     private String status;
+
+    //ovveride toString method
+    @Override
+    public String toString() {
+        return "name: " + name + "\n"
+                + "username: " + username + "\n"
+                + "password: " + password + "\n"
+                + "branch: " + branch + "\n"
+                + "address: " + address + "\n"
+                + "boid: " + boid + "\n"
+                + "clientCode: " + clientCode + "\n"
+                + "contact: " + contact + "\n"
+                + "createdApproveDate: " + createdApproveDate + "\n"
+                + "createdApproveDateStr: " + createdApproveDateStr + "\n"
+                + "customerTypeCode: " + customerTypeCode + "\n"
+                + "demat: " + demat + "\n"
+                + "dematExpiryDate: " + dematExpiryDate + "\n"
+                + "email: " + email + "\n"
+                + "expiredDate: " + expiredDate + "\n"
+                + "expiredDateStr: " + expiredDateStr + "\n"
+                + "gender: " + gender + "\n"
+                + "id: " + id + "\n"
+                + "imagePath: " + imagePath + "\n"
+                + "meroShareEmail: " + meroShareEmail + "\n"
+                + "name: " + name + "\n"
+                + "passwordChangeDate: " + passwordChangeDate + "\n"
+                + "passwordChangedDateStr: " + passwordChangedDateStr + "\n"
+                + "passwordExpiryDate: " + passwordExpiryDate + "\n"
+                + "passwordExpiryDateStr: " + passwordExpiryDateStr + "\n"
+                + "profileName: " + profileName + "\n"
+                + "renewedDate: " + renewedDate + "\n"
+                + "renewedDateStr: " + renewedDateStr + "\n"
+                + "status: " + status + "\n";
+    }
 }
