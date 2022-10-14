@@ -25,3 +25,5 @@ hs_err_pid*
 #ignore build
 /build/*
 /dist/
+#ignore .idea and inside
+.idea/*
