@@ -5,6 +5,7 @@ import com.sijanstu.autoshare.version3.Config;
 import com.sijanstu.autoshare.version3.dto.User;
 import com.sijanstu.autoshare.version3.dto.ipo.Bank;
 import com.sijanstu.autoshare.version3.dto.ipo.Capital;
+import com.sijanstu.autoshare.version3.dto.ipo.HistoryScript;
 import com.sijanstu.autoshare.version3.dto.ipo.ScripList;
 import com.sijanstu.autoshare.version3.dto.portfolio.Portfolio;
 import com.sijanstu.autoshare.version3.exceptions.CredentialsException;
@@ -48,18 +49,19 @@ public class Request {
 
     private HashMap<String, String> getHeaders() {
         HashMap<String, String> headers = Config.HEADERS;
-        if (user != null && user.getToken() != null) {
-            headers.put(Config.AUTH_HEADER, user.getToken());
+        if (user != null && user.getTokenW() != null) {
+            headers.put(Config.AUTH_HEADER, user.getTokenW());
         }
         return headers;
     }
 
-    private Connection.Response getHistory() throws IOException {
+    public ScripList getHistory() throws IOException {
         String payload = String.format(Config.HISTORY_PAYLOAD, user.getDemat(), user.getClientCode());
-        return get(post, Config.HISTORY_URL, payload);
+        Connection.Response response= get(post, Config.HISTORY_URL, payload);
+        return new Gson().fromJson(response.body(), ScripList.class);
     }
 
-    private void getToken() throws CredentialsException {
+    public String getToken() throws CredentialsException {
         try {
             String payload = String.format(Config.AUTH_PAYLOAD, user.getBranch(), user.getUsername(), user.getPassword());
             Connection.Response response = get(post, Config.AUTH_URL, payload);
@@ -67,6 +69,7 @@ public class Request {
         } catch (IOException e) {
             throw new CredentialsException("Invalid Credentials");
         }
+        return user.getToken();
     }
 
     private void getPortfolio() throws IOException {
@@ -87,14 +90,13 @@ public class Request {
         User user = new Gson().fromJson(response.body(), User.class);
         user.setToken(this.user.getToken());
         this.user = user;
-        System.out.println(user);
     }
 
     private void getBanks() throws IOException {
         Connection.Response response = get(get, Config.BANK_URL, "");
         Bank[] banks = new Gson().fromJson(response.body(), Bank[].class);
         for (int i = 0; i < banks.length; i++) {
-            banks[i]=getBank(this.user.getToken(),banks[i].getId());
+            banks[i]=getBank(banks[i].getId());
         }
         user.setBanks(banks);
     }
@@ -103,8 +105,21 @@ public class Request {
         Connection.Response response = get(get, Config.CAPITAL_LIST_URL, "");
         return new Gson().fromJson(response.body(), Capital[].class);
     }
-    private Bank getBank(String token,int id) throws IOException {
+    private Bank getBank(int id) throws IOException {
         Connection.Response response = get(get, Config.BANK_URL+""+id, "");
         return new Gson().fromJson(response.body(), Bank.class);
+    }
+    public HistoryScript getHistoryScript(int id) throws IOException {
+        Connection.Response response = get(get, Config.HistoryScriptUrl+id, "");
+        return new Gson().fromJson(response.body(), HistoryScript.class);
+    }
+
+    public boolean isTokenValid() {
+        try {
+            get(get, Config.USER_DETAIL_URL, "");
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

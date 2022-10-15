@@ -44,7 +44,9 @@ public class Apply {
         }
         Connection.Response response = get(get, Config.USER_DETAIL_URL, "");
         User user = new Gson().fromJson(response.body(), User.class);
-        return get(post, Config.APPLY_IPO_URL, getIpoApplyPayload(user,banks,kitta,ipoUser,cmpId));
+        String payload=getIpoApplyPayload(user,banks,kitta,ipoUser,cmpId);
+        Connection.Response response1= get(post, Config.APPLY_IPO_URL, payload);
+        return response1;
 
     }
     private String getIpoApplyPayload(User user, Bank[] banks,String kitta,IPOUser ipoUser,String cmpId) throws IOException {
@@ -54,7 +56,7 @@ public class Apply {
                 user.getBoid(),
                 bank.getAccountNumber(),
                 bank.getId(),
-                bank.getBranchID(),
+                bank.getAccountBranchId(),
                 kitta,
                 ipoUser.getCRN(),
                 ipoUser.getPIN(),

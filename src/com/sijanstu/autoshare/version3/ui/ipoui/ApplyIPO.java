@@ -48,10 +48,10 @@ public final class ApplyIPO extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         issuesPanel = new javax.swing.JPanel();
-        name = new javax.swing.JLabel();
-        name1 = new javax.swing.JLabel();
         name2 = new javax.swing.JLabel();
+        name = new javax.swing.JLabel();
         name3 = new javax.swing.JLabel();
+        name1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Available IPO List");
@@ -69,67 +69,68 @@ public final class ApplyIPO extends javax.swing.JFrame {
         jScrollPane1.setBorder(null);
 
         issuesPanel.setBackground(new java.awt.Color(0, 0, 0));
-        issuesPanel.setAutoscrolls(true);
-        issuesPanel.setPreferredSize(new java.awt.Dimension(980, 75));
         issuesPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        name.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        name.setForeground(new java.awt.Color(255, 255, 255));
-        name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        name.setText("Close Date");
-        issuesPanel.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 10, 310, 40));
-
-        name1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        name1.setForeground(new java.awt.Color(255, 255, 255));
-        name1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        name1.setText("Company Name ");
-        issuesPanel.add(name1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 310, 40));
+        jScrollPane1.setViewportView(issuesPanel);
 
         name2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         name2.setForeground(new java.awt.Color(255, 255, 255));
         name2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         name2.setText("Issue Type ");
-        issuesPanel.add(name2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 310, 40));
+
+        name.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        name.setForeground(new java.awt.Color(255, 255, 255));
+        name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        name.setText("Close Date");
 
         name3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         name3.setForeground(new java.awt.Color(255, 255, 255));
         name3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         name3.setText("Issue Description ");
-        issuesPanel.add(name3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, 310, 40));
 
-        jScrollPane1.setViewportView(issuesPanel);
+        name1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        name1.setForeground(new java.awt.Color(255, 255, 255));
+        name1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        name1.setText("Company Name ");
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
         roundPanel1Layout.setHorizontalGroup(
             roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(roundPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(roundPanel1Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(roundPanel1Layout.createSequentialGroup()
+                        .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(roundPanel1Layout.createSequentialGroup()
+                                .addGap(230, 230, 230)
+                                .addComponent(name2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(name1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(roundPanel1Layout.createSequentialGroup()
+                        .addGap(390, 390, 390)
+                        .addComponent(name3, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(100, 160, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
         );
         roundPanel1Layout.setVerticalGroup(
             roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(13, 13, 13)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(name2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(name1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(name3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(roundPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(roundPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
@@ -142,7 +143,7 @@ public final class ApplyIPO extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -151,13 +152,8 @@ public final class ApplyIPO extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ApplyIPO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ApplyIPO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ApplyIPO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException |
+                 InstantiationException ex) {
             java.util.logging.Logger.getLogger(ApplyIPO.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -189,6 +185,32 @@ public final class ApplyIPO extends javax.swing.JFrame {
                 if(scripList != null){
                     Scrip[] scrips = scripList.getObject();
                     int location=60;
+                    for(Scrip scrip : scrips){
+                        IpoApply ipoApply = new IpoApply(scrip);
+                        issuesPanel.add(ipoApply, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, location, -1, -1));
+                        location+=90;
+                    }
+                    issuesPanel.revalidate();
+                    issuesPanel.repaint();
+                    new FetchHistoryScripts(location).start();
+                }
+            } catch (IOException e) {
+               // JOptionPane.showMessageDialog(null, "Error in fetching data");
+            }
+
+        }
+    }
+    class FetchHistoryScripts extends Thread{
+        int location;
+        public FetchHistoryScripts(int location) {
+            this.location = location;
+        }
+        @Override
+        public void run(){
+            try {
+                ScripList scripList = new Request(Main.currentUser).getHistory();
+                if(scripList != null){
+                    Scrip[] scrips = scripList.getObject();
                     for(Scrip scrip : scrips){
                         IpoApply ipoApply = new IpoApply(scrip);
                         issuesPanel.add(ipoApply, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, location, -1, -1));

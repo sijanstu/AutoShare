@@ -2,11 +2,9 @@ package com.sijanstu.autoshare.version3.dto;
 
 import com.sijanstu.autoshare.version3.dto.ipo.Bank;
 import com.sijanstu.autoshare.version3.dto.portfolio.Portfolio;
-import com.sijanstu.autoshare.version3.exceptions.CredentialsException;
 import com.sijanstu.autoshare.version3.httprequests.Request;
-import lombok.*;
+import lombok.Data;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 @Data
@@ -75,5 +73,27 @@ public class User implements Serializable {
                 + "renewedDate: " + renewedDate + "\n"
                 + "renewedDateStr: " + renewedDateStr + "\n"
                 + "status: " + status + "\n";
+    }
+    //get token without validating
+    public String getTokenW() {
+        return token;
+    }
+    //get token
+    public String getToken() {
+        if (isTokenValid()) {
+            return token;
+        } else {
+            try {
+                return new Request(this).getToken();
+            } catch (Exception e) {
+                return null;
+            }
+        }
+    }
+
+    //is token valid
+    public boolean isTokenValid() {
+        Request request = new Request(this);
+        return request.isTokenValid();
     }
 }

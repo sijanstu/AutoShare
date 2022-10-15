@@ -40,6 +40,7 @@ public class Config {
     public static String PropertiesFile = ProgDir + "/autoshare.properties";
     public static String ThemeFolder = ProgDir + "/themes";
     public static String ThemeFile = ProgDir + "/theme.txt";
+    public static String HistoryScriptUrl = "https://webbackend.cdsc.com.np/api/meroShare/applicantForm/report/detail/";
 
     //ipo apply payload
     public static String IPOApplyPayload="{\"demat\":\"%s\",\"boid\":\"%s\",\"accountNumber\":\"%s\",\"customerId\":%d,\"accountBranchId\":%d,\"appliedKitta\":\"%s\",\"crnNumber\":\"%s\",\"transactionPIN\":\"%s\",\"companyShareId\":\"%s\",\"bankId\":%d}";

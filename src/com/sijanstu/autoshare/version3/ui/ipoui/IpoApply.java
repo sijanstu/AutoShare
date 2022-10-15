@@ -5,7 +5,12 @@
  */
 package com.sijanstu.autoshare.version3.ui.ipoui;
 
+import com.sijanstu.autoshare.version3.dto.ipo.HistoryScript;
 import com.sijanstu.autoshare.version3.dto.ipo.Scrip;
+import com.sijanstu.autoshare.version3.httprequests.Request;
+import com.sijanstu.autoshare.version3.ui.Main;
+
+import java.io.IOException;
 
 /**
  *
@@ -29,6 +34,44 @@ public class IpoApply extends javax.swing.JPanel {
         if(scrip.getAction()!=null&&scrip.getAction().equals("edit")){
             applyIpoButton.setText("Applied");
             applyIpoButton.setEnabled(false);
+        }
+        if(scrip.getApplicantFormId()!=null) {
+            try {
+                HistoryScript historyScript = new Request(Main.currentUser).getHistoryScript(scrip.getApplicantFormId());
+                applyIpoButton.setText(historyScript.getStatusName());
+                applyIpoButton.setEnabled(false);
+            } catch (IOException e) {
+                System.out.println("Error in getting history script");
+            }
+        }
+        switch (applyIpoButton.getText()) {
+            case "Alloted":
+                applyIpoButton.setBackground(new java.awt.Color(0, 255, 0));
+                break;
+            case "Unverified":
+                applyIpoButton.setBackground(new java.awt.Color(255, 255, 0));
+                break;
+            case "Rejected":
+                applyIpoButton.setBackground(new java.awt.Color(255, 0, 0));
+                break;
+            case "Applied":
+                applyIpoButton.setBackground(new java.awt.Color(0, 0, 255));
+                break;
+            case "Cancelled":
+                applyIpoButton.setBackground(new java.awt.Color(255, 0, 255));
+                break;
+            case "Not Alloted":
+                applyIpoButton.setBackground(new java.awt.Color(255, 20, 20));
+                break;
+            case "Partially Rejected":
+                applyIpoButton.setBackground(new java.awt.Color(255, 255, 255));
+                break;
+            case "Partially Cancelled":
+                applyIpoButton.setBackground(new java.awt.Color(255, 255, 255));
+                break;
+            default:
+                applyIpoButton.setBackground(new java.awt.Color(255, 255, 255));
+                break;
         }
     }
     /**

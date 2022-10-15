@@ -16,7 +16,6 @@ public class Transactions {
 }
 
 class TransactionView {
-
     public int balAfterTrans;
     public String creditQty;
     public String debitQty;

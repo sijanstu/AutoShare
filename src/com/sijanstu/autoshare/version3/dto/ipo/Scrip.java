@@ -14,4 +14,5 @@ public class Scrip {
     private String shareTypeName;
     private String statusName;
     private String subGroup;
+    private Integer applicantFormId;
 }

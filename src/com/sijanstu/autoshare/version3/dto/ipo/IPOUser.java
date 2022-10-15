@@ -1,7 +1,6 @@
 package com.sijanstu.autoshare.version3.dto.ipo;
 
 import com.sijanstu.autoshare.version3.Config;
-import com.sijanstu.autoshare.version3.dto.User;
 import com.sijanstu.autoshare.version3.ui.UserList;
 import lombok.Data;
 
@@ -9,7 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +26,7 @@ public class IPOUser {
     String kitta;
     String security;
     int company;
+    HashMap<String, String> tokens;
 
     public static ArrayList<IPOUser> getIPOUsers() {
         ArrayList<IPOUser> users = new ArrayList<>();
@@ -59,4 +59,7 @@ public class IPOUser {
             }
         return users;
     }
+
+    //get tokens
+
 }
