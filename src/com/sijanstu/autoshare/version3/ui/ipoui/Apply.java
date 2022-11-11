@@ -2,6 +2,7 @@ package com.sijanstu.autoshare.version3.ui.ipoui;
 
 import com.google.gson.Gson;
 import com.sijanstu.autoshare.version3.Config;
+import com.sijanstu.autoshare.version3.dto.ResponseDto;
 import com.sijanstu.autoshare.version3.dto.User;
 import com.sijanstu.autoshare.version3.dto.ipo.Bank;
 import com.sijanstu.autoshare.version3.dto.ipo.IPOUser;
@@ -32,7 +33,7 @@ public class Apply {
         }
         return headers;
     }
-    public Connection.Response applyIPO(IPOUser ipoUser, String kitta, String cmpId) throws IOException, CredentialsException {
+    public Result applyIPO(IPOUser ipoUser, String kitta, String cmpId) throws IOException, CredentialsException {
         user.setToken(get(post,
                 Config.AUTH_URL,
                 String.format(Config.AUTH_PAYLOAD, ipoUser.getCompany(), ipoUser.getUsername(), ipoUser.getPassword())
@@ -46,8 +47,8 @@ public class Apply {
         User user = new Gson().fromJson(response.body(), User.class);
         String payload=getIpoApplyPayload(user,banks,kitta,ipoUser,cmpId);
         Connection.Response response1= get(post, Config.APPLY_IPO_URL, payload);
-        return response1;
-
+        ResponseDto responseDto=new Gson().fromJson(response1.body(), ResponseDto.class);
+        return new Result(user.getName(),true,responseDto.getMessage());
     }
     private String getIpoApplyPayload(User user, Bank[] banks,String kitta,IPOUser ipoUser,String cmpId) throws IOException {
         Bank bank=chooseBank(banks,user.getName());

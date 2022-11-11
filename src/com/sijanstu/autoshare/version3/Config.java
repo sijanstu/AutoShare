@@ -6,6 +6,7 @@ public class Config {
     public static final String VERSION = "3.0.0";
     public static final String AUTHOR = "Sijanstu";
     public static final String APPLY_IPO_URL ="https://webbackend.cdsc.com.np/api/meroShare/applicantForm/share/apply";
+    public static final String IPO_CHECK_URL = "https://iporesult.cdsc.com.np/result/result/check";
     public static String PROPERIES_PATH = System.getProperty("user.home") + "/autoshare.properties";
     public static final String AUTH_HEADER = "Authorization";
     public static final String AUTH_URL = "https://webbackend.cdsc.com.np/api/meroShare/auth/";
@@ -21,6 +22,18 @@ public class Config {
         put("Content-Type", "application/json");
         put("Origin", "https://meroshare.cdsc.com.np");
         put("Referer", "https://meroshare.cdsc.com.np/");
+        put("Sec-Fetch-Dest", "empty");
+        put("Sec-Fetch-Mode", "cors");
+        put("Sec-Fetch-Site", "same-site");
+        put("Sec-GPC", "1");
+        put("user-agent", USER_AGENT);
+    }};
+    public static final HashMap<String, String> CheckHEADERS = new HashMap<String, String>() {{
+        put("Accept", "application/json, text/plain, */*");
+        put("Accept-Language", "en-US,en;q=0.6");
+        put("Content-Type", "application/json");
+        put("Origin", "https://iporesult.cdsc.com.np");
+        put("Referer", "https://iporesult.cdsc.com.np/");
         put("Sec-Fetch-Dest", "empty");
         put("Sec-Fetch-Mode", "cors");
         put("Sec-Fetch-Site", "same-site");
@@ -44,4 +57,12 @@ public class Config {
 
     //ipo apply payload
     public static String IPOApplyPayload="{\"demat\":\"%s\",\"boid\":\"%s\",\"accountNumber\":\"%s\",\"customerId\":%d,\"accountBranchId\":%d,\"appliedKitta\":\"%s\",\"crnNumber\":\"%s\",\"transactionPIN\":\"%s\",\"companyShareId\":\"%s\",\"bankId\":%d}";
+
+    public static String IPOCheckPayload="{\n" +
+            "  \"companyShareId\": \"%s\",\n" +
+            "  \"boid\": \"%s\",\n" +
+            "  \"userCaptcha\": \"%s\",\n" +
+            "  \"captchaIdentifier\": \"%s\"\n" +
+            "}";
+
 }

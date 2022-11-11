@@ -8,6 +8,9 @@
       <root url="jar://$PROJECT_DIR$/lib/gson-2.9.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jsoup-1.15.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/TimingFramework-0.55.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/sphinx4-core-5prealpha.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/sphinx4-data-5prealpha.jar!/" />
+      <root url="jar://$PROJECT_DIR$/json-20220924.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

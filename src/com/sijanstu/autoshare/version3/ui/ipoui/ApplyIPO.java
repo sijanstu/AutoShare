@@ -186,6 +186,7 @@ public final class ApplyIPO extends javax.swing.JFrame {
                     Scrip[] scrips = scripList.getObject();
                     int location=60;
                     for(Scrip scrip : scrips){
+                        System.out.println(scrip);
                         IpoApply ipoApply = new IpoApply(scrip);
                         issuesPanel.add(ipoApply, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, location, -1, -1));
                         location+=90;

@@ -5,16 +5,13 @@ import com.formdev.flatlaf.FlatLaf;
 import com.sijanstu.autoshare.version3.dto.ipo.IPOUser;
 import com.sijanstu.autoshare.version3.dto.ipo.Scrip;
 import com.sijanstu.autoshare.version3.exceptions.CredentialsException;
-import org.jsoup.Connection;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.lang.Thread.sleep;
 
 /**
  * @author Sijan Bhandari
@@ -155,57 +152,29 @@ public class Applying extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void applyIpoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyIpoButtonActionPerformed
-        try {
             if (kitta.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Kitta");
             } else if (Integer.parseInt(kitta.getText()) % 10 != 0) {
                 JOptionPane.showMessageDialog(this, "Kitta Number Must be Multiple of 10");
             }
+            ArrayList<Result> results = new ArrayList<>();
             userSelections.forEach((userSelection) -> {
                 if (userSelection.isSelected()) {
-                   // System.out.println("Selected User: " + userSelection.getUser().getUsername());
-                    Apply apply = new Apply();
-                    JDialog dialog;
-                    JOptionPane pane;
                     try {
-                        Connection.Response response = apply.applyIPO(userSelection.getUser(), kitta.getText(), scrip.getCompanyShareId().toString());
-                        if (response.statusCode() < 300 && response.statusCode() >= 200) {
-                            dialog = new JDialog(this, "Success", false);
-                            pane = new JOptionPane("IPO Applied Successfully" + " for" + userSelection.getUser().getUsername(), JOptionPane.INFORMATION_MESSAGE);
-                            dialog.setContentPane(pane);
-                            dialog.pack();
-                            dialog.setVisible(true);
-                            dialog.setAlwaysOnTop(true);
-                            dialog.setLocationRelativeTo(this);
-                        } else {
-                            //already applied or some error
-                            //dialog with error message
-                            //print response body
-                            System.out.println(response.body());
-                            dialog = new JDialog(this, "Error", false);
-                            pane = new JOptionPane("Error in Applying IPO for " + scrip.getCompanyName() + "BY " + userSelection.getUser().getUsername(), JOptionPane.ERROR_MESSAGE);
-                            dialog.setContentPane(pane);
-                            dialog.pack();
-                            dialog.setVisible(true);
-                            dialog.setAlwaysOnTop(true);
-                            dialog.setLocationRelativeTo(this);
-                        }
-                        //close dialog after 2 seconds
-                        Timer timer =new Timer(2000, (ActionEvent e) -> {
-                            dialog.dispose();
-                        });
-                        timer.setRepeats(false);
-                        timer.start();
-                        timer.setCoalesce(true);
+                        System.out.println(scrip);
+//                        if(scrip.getAction().equals("inProcess")){
+//                            results.add(new Result(userSelection.getUser().getUsername(), false, "Already Applied and Verified"));
+//                        }else {
+                            results.add(new Apply().applyIPO(userSelection.getUser(), kitta.getText(), scrip.getCompanyShareId().toString()));
+//                        }
                     } catch (IOException | CredentialsException e) {
-                        JOptionPane.showMessageDialog(this, e.toString());
+                        results.add(new Result(userSelection.getUser().getUsername(), false, e.getLocalizedMessage()));
+                        System.out.println(e);
                     }
                 }
             });
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.toString());
-        }
+            dispose();
+            Results.main(results);
     }//GEN-LAST:event_applyIpoButtonActionPerformed
 
     private void kittaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kittaActionPerformed

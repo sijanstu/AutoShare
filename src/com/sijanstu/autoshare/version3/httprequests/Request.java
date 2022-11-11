@@ -81,7 +81,7 @@ public class Request {
 
     public ScripList getApplicableIssue() throws IOException {
         Connection.Response response= get(post, Config.APPLICABLE_ISSUE_URL, Config.APPLICABLE_ISSUE_PAYLOAD);
-        //parse response
+        System.out.println(response.body());
         return new Gson().fromJson(response.body(), ScripList.class);
     }
 

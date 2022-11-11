@@ -32,8 +32,8 @@ public class IpoApply extends javax.swing.JPanel {
         this.scrip=scrip;
         
         if(scrip.getAction()!=null&&scrip.getAction().equals("edit")){
-            applyIpoButton.setText("Applied");
-            applyIpoButton.setEnabled(false);
+            applyIpoButton.setText("Edit");
+            applyIpoButton.setEnabled(true);
         }
         if(scrip.getApplicantFormId()!=null) {
             try {
