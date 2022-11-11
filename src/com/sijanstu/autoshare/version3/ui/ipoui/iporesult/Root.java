@@ -5,8 +5,14 @@ import lombok.Data;
 import java.util.ArrayList;
 @Data
 class Body{
-    public ArrayList<CompanyShareList> companyShareList;
+    public ArrayList<CompanyShareLists> companyShareList;
     public CaptchaData captchaData;
+}
+class CompanyShareLists{
+    public int id;
+    public String name;
+    public String scrip;
+    public boolean isFileUploaded;
 }
 @Data
 public class Root{
