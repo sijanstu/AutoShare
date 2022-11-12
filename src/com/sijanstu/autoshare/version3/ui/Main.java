@@ -76,20 +76,25 @@ public class Main extends javax.swing.JFrame {
                 currentUser = u;
             }
         });
-        try {
-            currentUser = new Request(currentUser).login();
-            portfolio.addPortfolio(currentUser.getPortfolio());
-        } catch (IOException e) {
-            System.out.println("Error updating portfolio" + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error logging in");
-        } catch (CredentialsException e) {
-            JOptionPane.showMessageDialog(null, "Invalid Credentials");
-        }
+
+            new Thread(() -> {
+                try {
+                    currentUser = new Request(currentUser).login();
+                    portfolio.addPortfolio(currentUser.getPortfolio());
+                } catch (IOException e) {
+                    System.out.println("Error updating portfolio" + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error logging in");
+                } catch (CredentialsException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid Credentials");
+                }
+            }).start();
+
         //System.out.println(currentUser);
 
     }
 
     void refresh() {
+    new Thread(() -> {
         File file = new File(Config.PROPERIES_PATH);
         if (file.exists()) {
             try {
@@ -127,6 +132,7 @@ public class Main extends javax.swing.JFrame {
 
         }
         currentUsername = Objects.requireNonNull(usersCombo.getSelectedItem()).toString();
+    }).start();
     }
 
     /**
@@ -347,7 +353,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_usersComboActionPerformed
 
     private void manageUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageUserButtonActionPerformed
-        UserList.main();
+        NewUserList.main(null);
     }//GEN-LAST:event_manageUserButtonActionPerformed
 
     private void profileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileActionPerformed

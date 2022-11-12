@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sijanstu.autoshare.version3.ui.portfolio;
 
 import com.sijanstu.autoshare.version3.dto.portfolio.Stock;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 import java.util.ArrayList;
 
@@ -31,7 +27,6 @@ public class Portfolio extends javax.swing.JPanel {
             if(scripUI.getParent()!=null){
                 scripUI.getParent().repaint();
                 scripUI.getParent().remove(scripUI);
-
             }
         }
         scripUIs=new ArrayList<>();
@@ -50,10 +45,12 @@ public class Portfolio extends javax.swing.JPanel {
     }
 
     private void addToPanel(ArrayList<ScripUI> scripUIs) {
+        new Thread(() -> {
         for (ScripUI scripUI : scripUIs) {
-            jPanel2.add(scripUI, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, startPoint, -1, -1));
+            jPanel2.add(scripUI, new AbsoluteConstraints(20, startPoint, -1, -1));
             startPoint += 70;
         }
+        }).start();
 
     }
 

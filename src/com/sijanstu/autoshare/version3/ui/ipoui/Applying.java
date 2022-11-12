@@ -159,6 +159,7 @@ public class Applying extends javax.swing.JFrame {
             }
             ArrayList<Result> results = new ArrayList<>();
             userSelections.forEach((userSelection) -> {
+                new Thread(() -> {
                 if (userSelection.isSelected()) {
                     try {
                         System.out.println(scrip);
@@ -172,7 +173,23 @@ public class Applying extends javax.swing.JFrame {
                         System.out.println(e);
                     }
                 }
+            }).start();
             });
+            System.out.println(userSelections.size());
+            //selected users count
+            int count = 0;
+            for (UserSelection userSelection : userSelections) {
+                if (userSelection.isSelected()) {
+                    count++;
+                }
+            }
+            while (results.size() != count) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    System.out.println(ex);
+                }
+            }
             dispose();
             Results.main(results);
     }//GEN-LAST:event_applyIpoButtonActionPerformed

@@ -70,7 +70,7 @@ public class IpoApply extends javax.swing.JPanel {
                 applyIpoButton.setBackground(new java.awt.Color(255, 255, 255));
                 break;
             default:
-                applyIpoButton.setBackground(new java.awt.Color(255, 255, 255));
+                applyIpoButton.setBackground(new java.awt.Color(0, 255, 0));
                 break;
         }
     }

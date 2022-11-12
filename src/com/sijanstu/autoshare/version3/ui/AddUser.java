@@ -22,23 +22,39 @@ import java.util.logging.Logger;
  * @author Sijan
  */
 public class AddUser extends javax.swing.JFrame {
-static File file = new File(Config.PROPERIES_PATH);
+
+    static File file = new File(Config.PROPERIES_PATH);
     /**
      * Creates new form AddUser
      *
      * @param user
      */
     IPOUser user;
-    Capital[] capitals;
-    public AddUser(IPOUser user)  {
+    public static Capital[] capitals;
+
+    public AddUser(IPOUser user) {
         this.user = user;
         initComponents();
         compComboBox.removeAllItems();
-        capitals = new Capital[0];
-        try {
-            capitals = new Request(null).getCapitals();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error while fetching capitals");
+        int tryCount = 0;
+        if(capitals==null || capitals.length==0) {
+            while (true) {
+                try {
+                    tryCount++;
+                    capitals = new Request(null).getCapitals();
+                    break;
+                } catch (IOException e) {
+                    if (tryCount == 20) {
+                        break;
+                    }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        System.out.println("Thread interrupted");
+                    }
+                    //JOptionPane.showMessageDialog(null, "Error while fetching capitals");
+                }
+            }
         }
         for (Capital capital : capitals) {
             compComboBox.addItem(capital.getName());
@@ -52,6 +68,7 @@ static File file = new File(Config.PROPERIES_PATH);
         }
         setDark(true);
     }
+
     public void setDark(boolean dark) {
         try {
             if (dark) {
@@ -65,6 +82,7 @@ static File file = new File(Config.PROPERIES_PATH);
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,23 +109,17 @@ static File file = new File(Config.PROPERIES_PATH);
         setTitle("Add User");
         setAlwaysOnTop(true);
         setResizable(false);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         compComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         compComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(compComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 280, 39));
 
         pin.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        getContentPane().add(pin, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 210, 43));
 
         username.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        getContentPane().add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 210, 43));
 
         password.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        getContentPane().add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 170, 210, 43));
 
         crn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        getContentPane().add(crn, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, 210, 43));
 
         submit.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         submit.setText("Add User");
@@ -116,44 +128,91 @@ static File file = new File(Config.PROPERIES_PATH);
                 submitActionPerformed(evt);
             }
         });
-        getContentPane().add(submit, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 350, 210, 40));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText("PIN");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 100, 40));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("DP");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 70, 30));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Username");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 100, 40));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("Password");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 100, 40));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("CRN");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 100, 40));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Add User");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -5, 440, 40));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(compComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(crn, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pin, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(compComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(crn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(pin, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
-       if (username.getText().equals("") || password.getText().equals("")) {
+        if (username.getText().equals("") || password.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "You must enter username and password");
         } else {
             try {
@@ -186,7 +245,19 @@ static File file = new File(Config.PROPERIES_PATH);
                         p.setProperty(userNumber + ".crn", crn.getText());
                         p.setProperty(userNumber + ".pin", pin.getText());
                         p.store(new FileWriter(file), "updated User: " + username.getText());
-                        UserList.refresh();
+                        try {
+                            //UserList.refresh();
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            NewUserList.newUserList.refresh();
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         break;
                     }
                 } else {
@@ -203,7 +274,17 @@ static File file = new File(Config.PROPERIES_PATH);
                         p.setProperty(userNumber + ".crn", crn.getText());
                         p.setProperty(userNumber + ".pin", pin.getText());
                         p.store(new FileWriter(file), "Added User: " + username.getText());
-                        UserList.refresh();
+                        try {
+                            //UserList.refresh();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            NewUserList.newUserList.refresh();
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     }
                 }

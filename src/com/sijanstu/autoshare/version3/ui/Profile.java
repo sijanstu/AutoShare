@@ -68,7 +68,7 @@ public class Profile extends javax.swing.JFrame {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 c.setBackground(new Color(0, 0, 0, 0));
-                c.setForeground(Color.BLACK);
+                c.setForeground(Color.WHITE);
                 return c;
             }
         });

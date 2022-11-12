@@ -63,9 +63,6 @@ public class UserList extends javax.swing.JFrame {
                             p.getProperty(userNumber + ".pin")
                         };
                         model.addRow(item);
-                        //table allign center
-
-
                         i++;
                     } else {
                         break;

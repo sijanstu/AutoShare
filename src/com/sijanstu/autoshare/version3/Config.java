@@ -1,6 +1,13 @@
 package com.sijanstu.autoshare.version3;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.sijanstu.autoshare.version3.ui.Main;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Config {
     public static final String VERSION = "3.0.0";
@@ -64,5 +71,12 @@ public class Config {
             "  \"userCaptcha\": \"%s\",\n" +
             "  \"captchaIdentifier\": \"%s\"\n" +
             "}";
-
+    public static void updateTheme(){
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        FlatLaf.updateUI();
+    }
 }
